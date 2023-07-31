@@ -39,39 +39,24 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
 A notes application where a user can login into an account and see their saved information
 Functionality includes creating sticky notes, reading created notes, edit notes, or deleting notes
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
 ## Built With
+  ![BadgeURLHere](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+  <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-
-* [![Next][Next.js]][Next-url]
-* [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
+  
 ## Installation
 
 1. Fork this Repo
 2. Clone it down to your machine
    ```sh
-     git clone https://github.com/your_username_/Project-Name.git
+     git clone git@github.com:ross-ian28/TerraPadUI.git
    ```
-4. `cd` into the root of the project directory
+4. `cd TerraPadUI` to move into the project directory
 5. Install dependencies
    ```sh
      npm install
@@ -88,9 +73,10 @@ This section should list any major frameworks/libraries used to bootstrap your p
 
 <!-- USAGE EXAMPLES -->
 ## Usage
+<img width="400" alt="Screenshot 2023-07-30 at 10 07 14 PM" src="https://github.com/ross-ian28/TerraPadUI/assets/92543573/ee57d34e-9f31-43c9-a811-d32c144a249c">
+<br>
+<img width="400" alt="Screenshot 2023-07-30 at 10 06 59 PM" src="https://github.com/ross-ian28/TerraPadUI/assets/92543573/73757cd5-08b2-4d12-8c88-aa9639efe285">
 
-Login:
-Register:
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -98,4 +84,4 @@ Register:
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
+Ian Ross - [@LinkedIn](https://github.com/ross-ian28) - ianross.codes@gmail.com
