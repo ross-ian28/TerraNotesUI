@@ -3,11 +3,46 @@ import React, { useState } from "react";
 export const Login = (props) => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
+    const [errorMsg, setError] = useState('');
+    const [isPending, setIsPending] = useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(email);
+        setIsPending(true);
+        setError('');
+        await fetch("http://localhost:5000/api/v1/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            email: email,
+            password: pass
+          }),
+        }).then(res => {
+            if (res.ok) {
+              console.log(res)
+              setIsPending(false);
+              console.log("Works perfect")
+              props.userEmail(email)
+              console.log(props)
+              props.onFormSwitch('homepage')
+            } else {
+              setError(true)
+              setIsPending(false);
+              console.log("api call failed")
+            }
+          })
+          .catch(error => {
+            setError(error)
+            setPass('');
+            console.log("catch error")
+            setIsPending(false);
+          })
     }
+
+
+
     return (
         <div className="auth-form-container">
                 <h2>TerraPad Login</h2>
@@ -16,9 +51,13 @@ export const Login = (props) => {
                 <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="youremail@gmail.com" id="email" name="email" />
                 <label form="password">password</label>
                 <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="********" id="password" name="password" />
-                <button>Log In</button>
+                { !isPending && <button type="submit">Login</button>}
+                { isPending && <button type="submit" disabled>Logging in</button>}
             </form>
             <button className="link-btn" onClick={() => props.onFormSwitch('register')}>Don't have an account? Register here</button>
+            <div className="error-msg">
+                {errorMsg && errorMsg.message}
+            </div>
         </div>
     );
 }
