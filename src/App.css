@@ -8,7 +8,7 @@
   background: linear-gradient(to top, #af81aa, #cdb16a);
 }
 
-.auth-form-container, .login-form, .register-form{
+.auth-form-container, .login-form, .register-form, .error-msg{
   display: flex;
   flex-direction: column;
 }
@@ -44,4 +44,8 @@ button {
   background-color: transparent;
   color: white;
   text-decoration: underline;
+}
+
+.error-msg {
+  border: red solid 1px;
 }
