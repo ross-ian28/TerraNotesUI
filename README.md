@@ -5,7 +5,7 @@
 <br />
 <div align="center">
   <img src="./src/logo.png" alt="Logo" width="20%" height="20%" >
-  <h1 align="center">TerraPad</h1>
+  <h1 align="center">TerraNotes</h1>
   <p align="center">
     Create and save your own sticky notes
     <br />
@@ -54,9 +54,9 @@ Functionality includes creating sticky notes, reading created notes, edit notes,
 1. Fork this Repo
 2. Clone it down to your machine
    ```sh
-     git clone git@github.com:ross-ian28/TerraPadUI.git
+     git clone git@github.com:ross-ian28/TerraNotesUI.git
    ```
-4. `cd TerraPadUI` to move into the project directory
+4. `cd TerraNotesUI` to move into the project directory
 5. Install dependencies
    ```sh
      npm install
@@ -73,10 +73,16 @@ Functionality includes creating sticky notes, reading created notes, edit notes,
 
 <!-- USAGE EXAMPLES -->
 ## Usage
-<img width="400" alt="Screenshot 2023-07-30 at 10 07 14 PM" src="https://github.com/ross-ian28/TerraPadUI/assets/92543573/ee57d34e-9f31-43c9-a811-d32c144a249c">
+<h4>Register</h4>
 <br>
-<img width="400" alt="Screenshot 2023-07-30 at 10 06 59 PM" src="https://github.com/ross-ian28/TerraPadUI/assets/92543573/73757cd5-08b2-4d12-8c88-aa9639efe285">
 
+![Login](https://github.com/ross-ian28/TerraPadUI/assets/92543573/da31b4d8-b9aa-429e-adc3-256d6946ea8b)
+
+
+<h4>Login</h4>
+<br>
+
+![Register](https://github.com/ross-ian28/TerraPadUI/assets/92543573/5032d635-2377-4d3d-aedd-73e0802d8910)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
