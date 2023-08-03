@@ -27,7 +27,6 @@ export const Login = (props) => {
               setIsPending(false);
               console.log("Works perfect")
               localStorage.setItem('email', email);
-              console.log(localStorage.setItem('email'))
               props.onFormSwitch('homepage')
             } else {
               console.log(res)
