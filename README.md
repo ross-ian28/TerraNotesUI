@@ -4,14 +4,10 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="./logo.png" alt="Logo" width="80" height="80">
-  </a>
-
+  <img src="./src/logo.png" alt="Logo" width="20%" height="20%" >
   <h1 align="center">TerraPad</h1>
-
   <p align="center">
-    A convenient way to use sticky notes and store important information
+    Create and save your own sticky notes
     <br />
     <br />
   </p>
@@ -46,6 +42,10 @@ Functionality includes creating sticky notes, reading created notes, edit notes,
 
 ## Built With
   ![BadgeURLHere](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+  ![BadgeURLHere](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)
+  ![BadgeURLHere](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+  ![BadgeURLHere](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+  ![BadgeURLHere](https://img.shields.io/badge/json-5E5C5C?style=for-the-badge&logo=json&logoColor=white)
   <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
   
