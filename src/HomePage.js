@@ -17,14 +17,14 @@ export const HomePage = (props) => {
         });
     
         if (response.ok) {
-          const userData = await response.json(); // Await the JSON data
-          setUser(userData.data); // Update the user state with the fetched data
+          const userData = await response.json();
+          setUser(userData.data); 
           console.log("Works perfect")
-          console.log(userData.data); // Check the updated user state
+          console.log(userData.data);
           props.onFormSwitch('homepage')
         } else {
           console.log(response)
-          setError("Invalid Credential")
+          setError("Invalid Credentials")
           console.log(errorMsg)
           console.log("api call failed")
         }
@@ -48,7 +48,7 @@ export const HomePage = (props) => {
 
           <div className="error-msg">
                 {errorMsg && errorMsg.message}
-            </div>
+          </div>
         </>
       ) : (
         <h1>Loading...</h1>
