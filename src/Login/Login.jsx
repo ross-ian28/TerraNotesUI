@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import logo from "./../logo.png";
+import "./Login.css";
 
 export const Login = (props) => {
     const [email, setEmail] = useState('');
@@ -24,16 +26,19 @@ export const Login = (props) => {
               console.log(res)
               setIsPending(false);
               console.log("Works perfect")
-              props.userEmail(email)
-              console.log(props)
+              localStorage.setItem('email', email);
+              console.log(localStorage.setItem('email'))
               props.onFormSwitch('homepage')
             } else {
-              setError(true)
+              console.log(res)
+              setError("Invalid Credential")
+              console.log(errorMsg)
               setIsPending(false);
               console.log("api call failed")
             }
           })
           .catch(error => {
+            console.log(error)
             setError(error)
             setPass('');
             console.log("catch error")
@@ -45,7 +50,10 @@ export const Login = (props) => {
 
     return (
         <div className="auth-form-container">
-                <h2>TerraPad Login</h2>
+            <div className="logo-container">                
+                <img src={logo} alt="Logo" />
+                <h2>TerraNotes Login</h2>
+            </div>
             <form className="login-form" onSubmit={handleSubmit}>
                 <label form="email">email</label>
                 <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="youremail@gmail.com" id="email" name="email" />
@@ -56,7 +64,7 @@ export const Login = (props) => {
             </form>
             <button className="link-btn" onClick={() => props.onFormSwitch('register')}>Don't have an account? Register here</button>
             <div className="error-msg">
-                {errorMsg && errorMsg.message}
+                {errorMsg}
             </div>
         </div>
     );

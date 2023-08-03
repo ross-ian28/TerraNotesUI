@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import logo from "./../logo.png";
+import "./Register.css";
 
 export const Register = (props) => {
     const [email, setEmail] = useState('');
@@ -23,12 +25,12 @@ export const Register = (props) => {
           }),
         }).then(res => {
             if (res.ok) {
-              console.log(res.body)
+              console.log(res)
               setIsPending(false);
               console.log("Works perfect")
               props.onFormSwitch('login')
             } else {
-              setError()
+              setError(res.json())
               setIsPending(false);
               console.log("api call failed")
             }
@@ -45,7 +47,10 @@ export const Register = (props) => {
 
     return (
         <div className="auth-form-container">
-                <h2>TerraPad Register</h2>
+            <div className="logo-container">                
+                <img src={logo} alt="Logo" />
+                <h2>TerraNotes Register</h2>
+            </div>
             <form className="register-form" onSubmit={handleSubmit}>
                 <label form="name">full name</label>
                 <input value={name} onChange={(e) => setName(e.target.value)} type="name" placeholder="yourname" id="name" name="name" />
