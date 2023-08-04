@@ -4,9 +4,10 @@ export const HomePage = (props) => {
   const email = localStorage.getItem('email');
   const [user, setUser] = useState(null);
   const [errorMsg, setError] = useState('');
+  const [isPending, setIsPending] = useState(false);
+
 
   useEffect(() => {
-    console.log(email)
     const fetchUserData = async () => {
       try {
         const response = await fetch(`http://localhost:5000/api/v1/user?email=${email}`, {
@@ -19,38 +20,54 @@ export const HomePage = (props) => {
         if (response.ok) {
           const userData = await response.json();
           setUser(userData.data); 
-          console.log("Works perfect")
-          console.log(userData.data);
         } else {
-          console.log(response)
-          setError("Invalid Credentials")
-          console.log(errorMsg)
-          console.log("api call failed")
+          props.onFormSwitch('login')
         }
       } catch (error) {
         console.log(error)
-        setError(error)
-        console.log("catch error")
       }
     };
-    
-
     fetchUserData();
   }, []);
 
-  const logout = () => {
-    console.log('logout')
+  const logout = async () => {
+    setIsPending(true);
+    setError('');
+    try {
+      const response = await fetch(`http://localhost:5000/api/v1/logout`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: email
+        }),
+      });
+  
+      if (response.ok) {
+        setIsPending(false);
+        props.onFormSwitch('login')
+      } else {
+        setIsPending(false);
+        const error = await response.json();
+        setError(error.data.error)
+      }
+    } catch (error) {
+      setIsPending(false);
+      setError(error)
+    }
   }
   return (
     <div className="homepage-container">
       {user ? (
         <>
-          <button onClick={() => logout()}>Logout</button>
+          { !isPending && <button onClick={() => logout()}>Logout</button>}
+          { isPending && <button  disabled>Logging in</button>}
           <h1>Hello {user.attributes.name}</h1>
           <p>Email: {user.attributes.email}</p>
 
           <div className="error-msg">
-                {errorMsg && errorMsg.message}
+                {errorMsg}
           </div>
         </>
       ) : (
