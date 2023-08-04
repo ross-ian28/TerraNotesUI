@@ -21,7 +21,6 @@ export const HomePage = (props) => {
           setUser(userData.data); 
           console.log("Works perfect")
           console.log(userData.data);
-          props.onFormSwitch('homepage')
         } else {
           console.log(response)
           setError("Invalid Credentials")
@@ -39,10 +38,14 @@ export const HomePage = (props) => {
     fetchUserData();
   }, []);
 
+  const logout = () => {
+    console.log('logout')
+  }
   return (
     <div className="homepage-container">
       {user ? (
         <>
+          <button onClick={() => logout()}>Logout</button>
           <h1>Hello {user.attributes.name}</h1>
           <p>Email: {user.attributes.email}</p>
 

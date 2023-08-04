@@ -12,37 +12,35 @@ export const Login = (props) => {
         e.preventDefault();
         setIsPending(true);
         setError('');
-        await fetch("http://localhost:5000/api/v1/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            email: email,
-            password: pass
-          }),
-        }).then(res => {
-            if (res.ok) {
-              console.log(res)
-              setIsPending(false);
-              console.log("Works perfect")
-              localStorage.setItem('email', email);
-              props.onFormSwitch('homepage')
-            } else {
-              console.log(res)
-              setError("Invalid Credential")
-              console.log(errorMsg)
-              setIsPending(false);
-              console.log("api call failed")
-            }
-          })
-          .catch(error => {
-            console.log(error)
-            setError(error)
-            setPass('');
-            console.log("catch error")
+        try {
+          const response = await fetch(`http://localhost:5000/api/v1/login`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              email: email,
+              password: pass
+            }),
+          });
+      
+          if (response.ok) {
             setIsPending(false);
-          })
+            localStorage.setItem('email', email);
+            console.log("Works perfect")
+            props.onFormSwitch('homepage')
+          } else {
+            const error = await response.json();
+            setError(error.data.error)
+            setIsPending(false);
+            console.log("api call failed")
+          }
+        } catch (error) {
+          setIsPending(false);
+          setError(error)
+          setPass('');
+          console.log("catch error")
+        }
     }
 
 

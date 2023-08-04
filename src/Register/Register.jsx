@@ -13,34 +13,35 @@ export const Register = (props) => {
         e.preventDefault();
         setIsPending(true);
         setError('');
-        await fetch("http://localhost:5000/api/v1/register", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            name: name,
-            email: email,
-            password: pass
-          }),
-        }).then(res => {
-            if (res.ok) {
-              console.log(res)
-              setIsPending(false);
-              console.log("Works perfect")
-              props.onFormSwitch('login')
-            } else {
-              setError(res.json())
-              setIsPending(false);
-              console.log("api call failed")
-            }
-          })
-          .catch(error => {
-            setError(error)
-            setPass('');
-            console.log("catch error")
+        try {
+          const response = await fetch(`http://localhost:5000/api/v1/register`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              name: name,
+              email: email,
+              password: pass
+            }),
+          });
+      
+          if (response.ok) {
             setIsPending(false);
-          })
+            console.log("Works perfect")
+            props.onFormSwitch('login')
+          } else {
+            const error = await response.json();
+            setError(error.data.error)
+            setIsPending(false);
+            console.log("api call failed")
+          }
+        } catch (error) {
+          setIsPending(false);
+          setError(error)
+          setPass('');
+          console.log("catch error")
+        }
     }
 
 
@@ -63,7 +64,7 @@ export const Register = (props) => {
             </form>
             <button className="link-btn" onClick={() => props.onFormSwitch('login')}>Already have an account? Login here</button>
             <div className="error-msg">
-                {errorMsg && errorMsg.message}
+                {errorMsg}
             </div>
         </div>
     );
