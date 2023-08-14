@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from "./../logo.png";
+import logo from "./../../logo.png";
 import "./Login.css";
 
 export const Login = (props) => {
@@ -31,7 +31,7 @@ export const Login = (props) => {
             props.onFormSwitch('homepage')
           } else {
             const error = await response.json();
-            setError(error.data.error)
+            setError(error.data.error || "Unknown error occurred")
             setIsPending(false);
             console.log("api call failed")
           }
@@ -39,6 +39,7 @@ export const Login = (props) => {
           setIsPending(false);
           setError(error)
           setPass('');
+          console.log(error)
           console.log("catch error")
         }
     }

@@ -1,0 +1,57 @@
+*{
+    box-sizing: border-box;
+}
+
+.sticky-note-container {
+    background: #77DD77;
+    width: 160px;
+    margin-bottom: 40px;
+    border: 1px solid #333;
+    position: absolute;
+    top: 30px;
+    left: 50px;
+}
+
+.sticky-note-header {
+    background: #89CFF0;
+    color: white;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Vertically center the content */
+    cursor: grab;
+}
+
+.sticky-note-header:active {
+    cursor: grabbing;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 5px;
+    outline: none;
+    resize: none;
+    background: #77DD77;
+    border: none;
+}
+
+.sticky-note-header .close {
+    order: 2;
+}
+
+.close {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    display: grid;
+    place-content: center;
+    margin-top: 2px;
+    padding-bottom: 2px;
+    cursor: pointer;
+    background-color: #c34aff;
+}
+
+.close:hover {
+    opacity: 0.8;
+}

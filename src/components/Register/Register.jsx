@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from "./../logo.png";
+import logo from "./../../logo.png";
 import "./Register.css";
 
 export const Register = (props) => {
@@ -32,11 +32,12 @@ export const Register = (props) => {
             props.onFormSwitch('login')
           } else {
             const error = await response.json();
-            setError(error.data.error)
+            setError(error.data.error || "Unknown eror occured")
             setIsPending(false);
             console.log("api call failed")
           }
         } catch (error) {
+          console.log(error)
           setIsPending(false);
           setError(error)
           setPass('');
