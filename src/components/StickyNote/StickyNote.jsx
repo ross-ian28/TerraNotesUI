@@ -3,7 +3,6 @@ import Draggable from "react-draggable";
 import './StickyNote.css';
 
 export default function StickyNote({ note, onClose, index }) {
-  const email = localStorage.getItem('email');
   const [currentNotes, setCurrentNotes] = useState(note.attributes.contents);
 
   const handleNoteChange = (newValue) => {

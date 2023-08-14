@@ -37,9 +37,8 @@ export const Login = (props) => {
           }
         } catch (error) {
           setIsPending(false);
-          setError(error)
+          setError("Bad request")
           setPass('');
-          console.log(error)
           console.log("catch error")
         }
     }
@@ -62,7 +61,7 @@ export const Login = (props) => {
             </form>
             <button className="link-btn" onClick={() => props.onFormSwitch('register')}>Don't have an account? Register here</button>
             <div className="error-msg">
-                {errorMsg}
+              {errorMsg && <p>{errorMsg}</p>}
             </div>
         </div>
     );
