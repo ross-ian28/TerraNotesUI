@@ -65,7 +65,7 @@ Functionality includes creating sticky notes, reading created notes, edit notes,
    ```sh
      npm install
    ```
-8. Be sure that both front-end and back-end servers are running at the same time
+8. Be sure that both front-end and <a href="https://github.com/ross-ian28/terra-notes-api">back-end</a> servers are running at the same time
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
