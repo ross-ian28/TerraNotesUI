@@ -10,7 +10,6 @@ export const HomePage = (props) => {
   const [isClosePending, setIsClosePending] = useState(false);
   const [notes, setNotes] = useState([]);
 
-
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -109,13 +108,13 @@ export const HomePage = (props) => {
   
       if (response.ok) {
         setIsNotePending(false);
-        console.log(response)
       } else {
         setIsNotePending(false);
-        const error = await response.json();
+        setError("Couldn't add new note");
       }
     } catch (error) {
       setIsNotePending(false);
+      setError("Bad request");
     }
   }
 
