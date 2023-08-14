@@ -1,60 +1,73 @@
-import { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import './StickyNote.css';
 
-export default function StickyNote({ onClose }) {
-  const [isDragging, setIsDragging] = useState(false);
-  const [offsetX, setOffsetX] = useState(0);
-  const [offsetY, setOffsetY] = useState(0);
-  const stickyNoteRef = useRef();
+export default function StickyNote({ note, onClose, index }) {
+  const email = localStorage.getItem('email');
+  const [currentNotes, setCurrentNotes] = useState(note.attributes.contents);
+  console.log(currentNotes) 
+  const [isPending, setIsPending] = useState(false);
 
-  useEffect(() => {
-    function handleMouseUp() {
-      setIsDragging(false);
-    }
-
-    document.addEventListener('mouseup', handleMouseUp);
-    return () => {
-      document.removeEventListener('mouseup', handleMouseUp);
-    };
-  }, []);
-
-  function handleMouseDown(e) {
-    setIsDragging(true);
-    setOffsetX(e.clientX - stickyNoteRef.current.getBoundingClientRect().left);
-    setOffsetY(e.clientY - stickyNoteRef.current.getBoundingClientRect().top);
-  }
-
-  function handleMouseMove(e) {
-    if (isDragging) {
-      const x = e.clientX - offsetX;
-      const y = e.clientY - offsetY;
-      stickyNoteRef.current.style.left = x + 'px';
-      stickyNoteRef.current.style.top = y + 'px';
+  const handleNoteChange = (index, newValue) => {
+    setCurrentNotes(prevNotes => {
+      const newNotes = [...prevNotes];
+      newNotes[index] = newValue;
+      return newNotes;
+    });
+  };
+  
+  const addNewNote = async () => {
+    setIsPending(true);
+    try {
+      const response = await fetch(`http://localhost:5000/api/v1/new_note`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: email
+        }),
+      });
+  
+      if (response.ok) {
+        setIsPending(false);
+        console.log(response)
+      } else {
+        setIsPending(false);
+        const error = await response.json();
+      }
+    } catch (error) {
+      setIsPending(false);
     }
   }
 
   return (
     <div className="note-page-container">
-      <div className="new-note-container">
-        <button className="sticky-btn">New Note +</button>
-      </div>
-      <div
-        className="sticky-note-container"
-        ref={stickyNoteRef}
-        onMouseDown={handleMouseDown}
-      >
-        <div
-          className="sticky-note-header"
-          onMouseMove={handleMouseMove}
-          onMouseUp={() => setIsDragging(false)}
-        >
-          <div>StickyNote</div>
-          <div className="close" onClick={onClose}>
-            &times;
-          </div>
+        <div className="new-note-container">
+            <button className="sticky-btn" onClick={addNewNote}>
+              New Note +
+            </button>
+            <button className="sticky-btn" onClick={addNewNote}>
+              Creating Note +
+            </button>
         </div>
-        <textarea name="" id="" cols="17" rows="9"></textarea>
-      </div>
+      {currentNotes.map((note, index) => (
+        <div className="sticky-note-container" key={index}>
+          <div className="sticky-note-header">
+            <div className="close" onClick={onClose}>
+              &times;
+            </div>
+          </div>
+          <textarea
+            name={`Sticky note ${note.id}`}
+            id = {note.id}
+            cols="17"
+            rows="9"
+            value={note}
+            onChange={(e) => handleNoteChange(index, e.target.value)}
+          ></textarea>
+        </div>
+      ))}
     </div>
   );
 }
+

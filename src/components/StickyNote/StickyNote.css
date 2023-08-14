@@ -18,7 +18,12 @@
     padding: 5px;
     display: flex;
     justify-content: space-between;
+    align-items: center; /* Vertically center the content */
     cursor: grab;
+}
+
+.sticky-note-header:active {
+    cursor: grabbing;
 }
 
 textarea {
@@ -29,6 +34,10 @@ textarea {
     resize: none;
     background: #77DD77;
     border: none;
+}
+
+.sticky-note-header .close {
+    order: 2;
 }
 
 .close {
