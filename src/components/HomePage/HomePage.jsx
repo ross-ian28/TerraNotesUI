@@ -5,7 +5,9 @@ export const HomePage = (props) => {
   const email = localStorage.getItem('email');
   const [user, setUser] = useState(null);
   const [errorMsg, setError] = useState('');
-  const [isPending, setIsPending] = useState(false);
+  const [isNotePending, setIsNotePending] = useState(false);
+  const [isLogoutPending, setIsLogoutPending] = useState(false);
+  const [isClosePending, setIsClosePending] = useState(false);
   const [notes, setNotes] = useState([]);
 
 
@@ -37,7 +39,7 @@ export const HomePage = (props) => {
   }, [setUser, email]);
 
   const logout = async () => {
-    setIsPending(true);
+    setIsLogoutPending(true);
     setError('');
     try {
       const response = await fetch(`http://localhost:5000/api/v1/logout`, {
@@ -51,21 +53,21 @@ export const HomePage = (props) => {
       });
   
       if (response.ok) {
-        setIsPending(false);
+        setIsLogoutPending(false);
         props.onFormSwitch('login')
       } else {
-        setIsPending(false);
+        setIsLogoutPending(false);
         const error = await response.json();
         setError(error.data.error || "Failed to logout.")
       }
     } catch (error) {
-      setIsPending(false);
+      setIsLogoutPending(false);
       setError("An unexpected error occurred.");
     }
   }
 
   const handleNoteClose = async () => {
-    setIsPending(true);
+    setIsClosePending(true);
     setError('');
     try {
       const response = await fetch(`http://localhost:5000/api/v1/delete_note`, {
@@ -79,16 +81,41 @@ export const HomePage = (props) => {
       });
   
       if (response.ok) {
-        setIsPending(false);
+        setIsClosePending(false);
         props.onFormSwitch('login')
       } else {
-        setIsPending(false);
+        setIsClosePending(false);
         const error = await response.json();
         setError(error.data.error || "Failed to logout.")
       }
     } catch (error) {
-      setIsPending(false);
+      setIsClosePending(false);
       setError("An unexpected error occurred.");
+    }
+  }
+
+  const addNewNote = async () => {
+    setIsNotePending(true);
+    try {
+      const response = await fetch(`http://localhost:5000/api/v1/new_note`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: email
+        }),
+      });
+  
+      if (response.ok) {
+        setIsNotePending(false);
+        console.log(response)
+      } else {
+        setIsNotePending(false);
+        const error = await response.json();
+      }
+    } catch (error) {
+      setIsNotePending(false);
     }
   }
 
@@ -96,8 +123,12 @@ export const HomePage = (props) => {
     <div className="homepage-container">
       {user ? (
         <>
-          { !isPending && <button onClick={() => logout()}>Logout</button>}
-          { isPending && <button  disabled>Logging out</button>}
+          <div className="new-note-container">
+            { !isNotePending && <button className="sticky-btn" onClick={addNewNote}>New Note +</button>}
+            { isNotePending && <button className="sticky-btn" disabled>Creating Note...</button>}
+          </div>
+          { !isLogoutPending && <button onClick={() => logout()}>Logout</button>}
+          { isLogoutPending && <button  disabled>Logging out</button>}
           <div className="sticky-notes-container">
             {notes.map((note, index) => (
               <StickyNote note={note} onClose={() => handleNoteClose(index)} key={index}/>
@@ -108,7 +139,6 @@ export const HomePage = (props) => {
           
           <div className="error-msg">
             {errorMsg && <p>{errorMsg}</p>}
-            {notes}
           </div>
         </>
       ) : (
