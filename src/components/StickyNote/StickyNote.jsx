@@ -70,7 +70,7 @@ export default function StickyNote({ note, onClose, index }) {
   return (
       <Draggable 
         defaultPosition={{ 
-          x: x_position, 
+          x: x_position,
           y: y_position 
         }}
         onStop={(e, position) => handleDragStop(position)} 

@@ -18,12 +18,11 @@ export const HomePage = (props) => {
             "Content-Type": "application/json"
           },
         });
-    
         if (response.ok) {
           const userData = await response.json();
           setUser(userData.data);
           if (userData.data.attributes.notes) {
-            console.log("set notes")
+            console.log("set notes:", userData.data.attributes.notes)
             setNotes(userData.data.attributes.notes);
           }
         } else {
