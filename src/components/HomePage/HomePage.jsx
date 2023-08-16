@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import StickyNote from './../StickyNote/StickyNote'
+import StickyNote from './../StickyNote/StickyNote';
 
 export const HomePage = (props) => {
   const email = localStorage.getItem('email');
@@ -7,7 +7,6 @@ export const HomePage = (props) => {
   const [errorMsg, setError] = useState('');
   const [isNotePending, setIsNotePending] = useState(false);
   const [isLogoutPending, setIsLogoutPending] = useState(false);
-  const [isClosePending, setIsClosePending] = useState(false);
   const [notes, setNotes] = useState([]);
 
   useEffect(() => {
@@ -66,7 +65,6 @@ export const HomePage = (props) => {
   }
 
   const handleNoteClose = async () => {
-    setIsClosePending(true);
     setError('');
     try {
       const response = await fetch(`http://localhost:5000/api/v1/delete_note`, {
@@ -80,15 +78,12 @@ export const HomePage = (props) => {
       });
   
       if (response.ok) {
-        setIsClosePending(false);
         props.onFormSwitch('login')
       } else {
-        setIsClosePending(false);
         const error = await response.json();
         setError(error.data.error || "Failed to logout.")
       }
     } catch (error) {
-      setIsClosePending(false);
       setError("An unexpected error occurred.");
     }
   }
@@ -107,6 +102,8 @@ export const HomePage = (props) => {
       });
   
       if (response.ok) {
+        const newNote = await response.json();
+        setNotes([...notes, newNote.data]);
         setIsNotePending(false);
       } else {
         setIsNotePending(false);
