@@ -4,7 +4,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <img src="./src/logo.png" alt="Logo" width="20%" height="20%" >
+  <img src="./src/assets/logo.png" alt="Logo" width="20%" height="20%" >
   <h1 align="center">TerraNotes</h1>
   <p align="center">
     Create and save your own sticky notes
