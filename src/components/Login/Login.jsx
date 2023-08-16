@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from "./../../logo.png";
+import logo from "./../../assets/logo.png";
 import "./Login.css";
 
 export const Login = (props) => {

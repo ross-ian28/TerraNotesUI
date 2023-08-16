@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from "./../../logo.png";
+import logo from "./../../assets/logo.png";
 import "./Register.css";
 
 export const Register = (props) => {
@@ -37,9 +37,8 @@ export const Register = (props) => {
             console.log("api call failed")
           }
         } catch (error) {
-          console.log(error)
           setIsPending(false);
-          setError(error)
+          setError("Bad request")
           setPass('');
           console.log("catch error")
         }
