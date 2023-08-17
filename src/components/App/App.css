@@ -1,7 +1,3 @@
-#neon-gradient-overlay {
-  filter: url("#pixelated-filter"); /* Add the URL to your pixelated filter */
-}
-
 .App {
   text-align: center;
   display: flex;
@@ -10,7 +6,7 @@
   justify-content: center;
   color: white;
   background: linear-gradient(to top, #ff00ff, #e6e648);
-  position: relative; /* Set position relative to contain the pseudo-element */
+  position: relative;
 }
 
 .auth-form-container, .login-form, .register-form, .error-msg{
@@ -66,14 +62,13 @@ button {
 }
 
 .logo-container img {
-  width: 100px; /* Adjust the width as needed */
-  height: 100px; /* Adjust the height as needed */
+  width: 100px;
+  height: 100px;
 
 }
 
 .logo-container h2 {
   text-align: center;
-  font-size: 1.5rem; /* Adjust the font size as needed */
-  margin-right: 2rem; /* Add a margin to move the title to the left */
-
+  font-size: 1.5rem;
+  margin-right: 2rem;
 }
