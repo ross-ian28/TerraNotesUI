@@ -119,20 +119,25 @@ export const HomePage = (props) => {
     <div className="homepage-container">
       {user ? (
         <>
-          <div className="new-note-container">
-            { !isNotePending && <button className="sticky-btn" onClick={addNewNote}>New Note +</button>}
-            { isNotePending && <button className="sticky-btn" disabled>Creating Note...</button>}
+          <div className="top-bar">
+            <div className="user-info">
+              <h1>Hello {user.attributes.name}</h1>
+              <p>Email: {user.attributes.email}</p>
+            </div>
+            <div className="new-note-container">
+              {!isNotePending && <button className="sticky-btn" onClick={addNewNote}>New Note +</button>}
+              {isNotePending && <button className="sticky-btn" disabled>Creating Note...</button>}
+            </div>
+            <div className="logout-container">
+              {!isLogoutPending && <button onClick={() => logout()}>Logout</button>}
+              {isLogoutPending && <button disabled>Logging out</button>}
+            </div>
           </div>
-          { !isLogoutPending && <button onClick={() => logout()}>Logout</button>}
-          { isLogoutPending && <button  disabled>Logging out</button>}
           <div className="sticky-notes-container">
-            {notes.map((note, index) => (
+            {notes.map((note) => (
               <StickyNote note={note} onClose={() => handleNoteClose(note.id)} key={note.id} />
             ))}
           </div>
-          <h1>Hello {user.attributes.name}</h1>
-          <p>Email: {user.attributes.email}</p>
-          
           <div className="error-msg">
             {errorMsg && <p>{errorMsg}</p>}
           </div>
@@ -141,5 +146,5 @@ export const HomePage = (props) => {
         <h1>Loading...</h1>
       )}
     </div>
-  );
+  );  
 };
