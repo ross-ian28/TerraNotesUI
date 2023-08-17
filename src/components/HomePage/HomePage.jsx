@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import StickyNote from './../StickyNote/StickyNote';
+import logo from "./../../assets/logo.png";
+import "./HomePage.css";
 
 export const HomePage = (props) => {
   const email = localStorage.getItem('email');
@@ -22,7 +24,6 @@ export const HomePage = (props) => {
           const userData = await response.json();
           setUser(userData.data);
           if (userData.data.attributes.notes) {
-            console.log("set notes:", userData.data.attributes.notes)
             setNotes(userData.data.attributes.notes);
           }
         } else {
@@ -117,34 +118,42 @@ export const HomePage = (props) => {
 
   return (
     <div className="homepage-container">
-      {user ? (
-        <>
-          <div className="top-bar">
-            <div className="user-info">
-              <h1>Hello {user.attributes.name}</h1>
-              <p>Email: {user.attributes.email}</p>
-            </div>
-            <div className="new-note-container">
-              {!isNotePending && <button className="sticky-btn" onClick={addNewNote}>New Note +</button>}
-              {isNotePending && <button className="sticky-btn" disabled>Creating Note...</button>}
-            </div>
-            <div className="logout-container">
-              {!isLogoutPending && <button onClick={() => logout()}>Logout</button>}
-              {isLogoutPending && <button disabled>Logging out</button>}
-            </div>
+      <div className="header">
+        <div className="title-container">
+          <div className="logo-container">
+            <img src={logo} alt="Logo" />
           </div>
-          <div className="sticky-notes-container">
-            {notes.map((note) => (
-              <StickyNote note={note} onClose={() => handleNoteClose(note.id)} key={note.id} />
-            ))}
-          </div>
-          <div className="error-msg">
-            {errorMsg && <p>{errorMsg}</p>}
-          </div>
-        </>
-      ) : (
-        <h1>Loading...</h1>
-      )}
+          <h1 className="app-name">TerraNotes</h1>
+        </div>
+        <div className="user-actions">
+          {user ? (
+            <>
+              <div className="new-note-container">
+                {!isNotePending && <button className="sticky-btn" onClick={addNewNote}>New Note +</button>}
+                {isNotePending && <button className="sticky-btn" disabled>Creating Note...</button>}
+              </div>
+              <div className="logout-container">
+                {!isLogoutPending && <button onClick={() => logout()}>Logout</button>}
+                {isLogoutPending && <button disabled>Logging out</button>}
+              </div>
+              <div className="user-info">
+                <h1>Hello {user.attributes.name}</h1>
+                <p>Email: {user.attributes.email}</p>
+              </div>
+            </>
+          ) : (
+            <h1>Loading...</h1>
+          )}
+        </div>
+      </div>
+      <div className="sticky-notes-container">
+        {notes.map((note) => (
+          <StickyNote note={note} onClose={() => handleNoteClose(note.id)} key={note.id} />
+        ))}
+      </div>
+      <div className="error-msg">
+        {errorMsg && <p>{errorMsg}</p>}
+      </div>
     </div>
-  );  
+  );
 };
