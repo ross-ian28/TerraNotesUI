@@ -63,7 +63,7 @@ export const HomePage = (props) => {
     }
   }
 
-  const handleNoteClose = async () => {
+  const handleNoteClose = async (noteId) => {
     setError('');
     try {
       const response = await fetch(`http://localhost:5000/api/v1/delete_note`, {
@@ -72,15 +72,16 @@ export const HomePage = (props) => {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          email: email
+          email: email,
+          note_id: noteId
         }),
       });
   
       if (response.ok) {
-        props.onFormSwitch('login')
+        setNotes(notes.filter(note => note.id !== noteId));
       } else {
         const error = await response.json();
-        setError(error.data.error || "Failed to logout.")
+        setError(error.data.error || "Failed to delete note")
       }
     } catch (error) {
       setError("An unexpected error occurred.");
@@ -126,7 +127,7 @@ export const HomePage = (props) => {
           { isLogoutPending && <button  disabled>Logging out</button>}
           <div className="sticky-notes-container">
             {notes.map((note, index) => (
-              <StickyNote note={note} onClose={() => handleNoteClose(index)} key={index}/>
+              <StickyNote note={note} onClose={() => handleNoteClose(note.id)} key={note.id} />
             ))}
           </div>
           <h1>Hello {user.attributes.name}</h1>
