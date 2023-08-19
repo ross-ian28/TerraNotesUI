@@ -10,6 +10,7 @@ export default function StickyNote({ note, onClose, index }) {
   const [errorMsg, setError] = useState('');
 
   const throttledNoteChange = throttle(async (newValue) => {
+    setError('');
     try {
       const response = await fetch(`http://localhost:5000/api/v1/edit_note`, {
         method: "PATCH",
@@ -26,7 +27,7 @@ export default function StickyNote({ note, onClose, index }) {
         console.error("Failed to update note contents");
       }
     } catch (error) {
-      console.error("An unexpected error occurred while updating note contents");
+      setError("An unexpected error occurred while updating note");
     }
   }, 500);
 
@@ -42,6 +43,7 @@ export default function StickyNote({ note, onClose, index }) {
   }, []);
 
   const handleDragStop = async (position) => {
+    setError('');
     try {
       const response = await fetch(`http://localhost:5000/api/v1/edit_note_position`, {
         method: "PATCH",
@@ -74,7 +76,7 @@ export default function StickyNote({ note, onClose, index }) {
           y: y_position 
         }}
         onStop={(e, position) => handleDragStop(position)} 
-      >
+      > 
       <div className="note-page-container">
           <div className="sticky-note-container" key={index}>
             <div className="sticky-note-header">
@@ -82,7 +84,6 @@ export default function StickyNote({ note, onClose, index }) {
                 &times;
               </div>
             </div>
-            {errorMsg && <p>{errorMsg}</p>}
             <textarea
               name={`Sticky note ${note.id}`}
               id = {note.id}
@@ -91,6 +92,9 @@ export default function StickyNote({ note, onClose, index }) {
               value={currentNote}
               onChange={(e) => handleNoteChange(e.target.value)}
             ></textarea>
+            <div className="sticky-note-err">
+             {errorMsg && <p><hr className="sticky-note-footer"></hr>{errorMsg}</p>}
+            </div>
           </div>
       </div>
     </Draggable>
