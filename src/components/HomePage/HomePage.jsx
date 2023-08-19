@@ -1,3 +1,4 @@
+// Import necessary dependencies and styles
 import React, { useState, useEffect } from "react";
 import StickyNote from './../StickyNote/StickyNote';
 import logo from "./../../assets/logo.png";
@@ -11,6 +12,7 @@ export const HomePage = (props) => {
   const [isLogoutPending, setIsLogoutPending] = useState(false);
   const [notes, setNotes] = useState([]);
 
+  // Fetch user data and notes when the component mounts
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -23,8 +25,10 @@ export const HomePage = (props) => {
         if (response.ok) {
           const userData = await response.json();
           setUser(userData.data);
-          if (userData.data.attributes.notes) {
+          if (!userData.data.attributes.notes === []) { // If a user has notes, then set notes to users notes
             setNotes(userData.data.attributes.notes);
+          } else { // If there are no notes, set notes to empty
+            setError("No current notes")
           }
         } else {
           setError("Failed to fetch user data.");
@@ -34,8 +38,10 @@ export const HomePage = (props) => {
       }
     };
     fetchUserData();
-  }, [setUser, email]);
+  }, [email]);
 
+
+  // Logout function
   const logout = async () => {
     setIsLogoutPending(true);
     setError('');
@@ -64,6 +70,7 @@ export const HomePage = (props) => {
     }
   }
 
+  // Function to handle closing a note
   const handleNoteClose = async (noteId) => {
     setError('');
     try {
@@ -79,7 +86,15 @@ export const HomePage = (props) => {
       });
   
       if (response.ok) {
-        setNotes(notes.filter(note => note.id !== noteId));
+        setNotes((prevNotes) => prevNotes.filter(note => note.id !== noteId)); // Set notes to a new array without the note with the id noteId
+        console.log(notes)
+        if (notes.length === 1) { // Display error if there are no notes
+          console.log(errorMsg)
+          setError("No current notes");
+          console.log(errorMsg)
+        } else {
+          setError("");
+        }
       } else {
         const error = await response.json();
         setError(error.data.error || "Failed to delete note")
@@ -89,8 +104,10 @@ export const HomePage = (props) => {
     }
   }
 
+  // Function to add a new note
   const addNewNote = async () => {
     setIsNotePending(true);
+    setError('');
     try {
       const response = await fetch(`http://localhost:5000/api/v1/new_note`, {
         method: "POST",
@@ -130,7 +147,7 @@ export const HomePage = (props) => {
             <>
               <div className="new-note-container">
                 {!isNotePending && <button className="sticky-btn" onClick={addNewNote}>New Note +</button>}
-                {isNotePending && <button className="sticky-btn" disabled>Creating Note...</button>}
+                {isNotePending && <button className="sticky-btn" disabled>Creating Note</button>}
               </div>
               <div className="logout-container">
                 {!isLogoutPending && <button onClick={() => logout()}>Logout</button>}
@@ -151,9 +168,17 @@ export const HomePage = (props) => {
           <StickyNote note={note} onClose={() => handleNoteClose(note.id)} key={note.id} />
         ))}
       </div>
-      <div className="error-msg">
-        {errorMsg && <p>{errorMsg}</p>}
-      </div>
+      {notes.empty ? (
+        <>
+          <div>
+            <h1>Notes</h1>
+          </div>
+        </>
+      ) : (
+        <div className="error-msg">
+          {errorMsg && <p>{errorMsg}</p>}
+        </div>
+      )}
     </div>
   );
 };
