@@ -15,26 +15,30 @@ export const HomePage = (props) => {
   // Fetch user data and notes when the component mounts
   useEffect(() => {
     const fetchUserData = async () => {
-      try {
-        const response = await fetch(`http://localhost:5000/api/v1/user?email=${email}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json"
-          },
-        });
-        if (response.ok) {
-          const userData = await response.json();
-          setUser(userData.data);
-          if (!userData.data.attributes.notes === []) { // If a user has notes, then set notes to users notes
-            setNotes(userData.data.attributes.notes);
-          } else { // If there are no notes, set notes to empty
-            setError("No current notes")
+      if (email) {
+        try {
+          const response = await fetch(`http://localhost:5000/api/v1/user?email=${email}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json"
+            },
+          });
+          if (response.ok) {
+            const userData = await response.json();
+            setUser(userData.data);
+            
+            const fetchedNotes = userData.data.attributes.notes;
+            if (fetchedNotes.length === 0) {
+              setError("No current notes");
+            } else {
+              setNotes(fetchedNotes);
+            }
+          } else {
+            setError("Failed to fetch user data.");
           }
-        } else {
-          setError("Failed to fetch user data.");
+        } catch (error) {
+          setError("An unexpected error occurred.");
         }
-      } catch (error) {
-        setError("An unexpected error occurred.");
       }
     };
     fetchUserData();
@@ -86,12 +90,9 @@ export const HomePage = (props) => {
       });
   
       if (response.ok) {
-        setNotes((prevNotes) => prevNotes.filter(note => note.id !== noteId)); // Set notes to a new array without the note with the id noteId
-        console.log(notes)
+        setNotes((prevNotes) => prevNotes.filter(note => note.id !== noteId)); // Set notes to a new array excluding the note with the id equal to noteId
         if (notes.length === 1) { // Display error if there are no notes
-          console.log(errorMsg)
           setError("No current notes");
-          console.log(errorMsg)
         } else {
           setError("");
         }
@@ -121,7 +122,7 @@ export const HomePage = (props) => {
   
       if (response.ok) {
         const newNote = await response.json();
-        setNotes([...notes, newNote.data]);
+        setNotes(prevNotes => [...prevNotes, newNote.data]); // Add new note to array of notes
         setIsNotePending(false);
       } else {
         setIsNotePending(false);
@@ -166,12 +167,12 @@ export const HomePage = (props) => {
       <div className="sticky-notes-container">
         {notes.map((note) => (
           <StickyNote note={note} onClose={() => handleNoteClose(note.id)} key={note.id} />
-        ))}
+        ))} 
       </div>
-      {notes.empty ? (
+      {notes.length === 0 ? (
         <>
           <div>
-            <h1>Notes</h1>
+            <h1>No current notes</h1>
           </div>
         </>
       ) : (
