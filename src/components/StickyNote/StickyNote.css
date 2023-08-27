@@ -18,7 +18,7 @@
     padding: 5px;
     display: flex;
     justify-content: space-between;
-    align-items: center; /* Vertically center the content */
+    align-items: center;
     cursor: grab;
 }
 
@@ -54,4 +54,15 @@ textarea {
 
 .close:hover {
     opacity: 0.8;
+}
+
+.sticky-note-err {
+    font-size: 10px;
+    color: black;
+}
+
+.sticky-note-footer {
+    display: flex;
+    color: blue;
+    margin: 9px;
 }

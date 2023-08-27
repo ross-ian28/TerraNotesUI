@@ -1,3 +1,4 @@
+// Import necessary dependencies and styles
 import React, { useState, useEffect } from "react";
 import StickyNote from './../StickyNote/StickyNote';
 import logo from "./../../assets/logo.png";
@@ -11,31 +12,40 @@ export const HomePage = (props) => {
   const [isLogoutPending, setIsLogoutPending] = useState(false);
   const [notes, setNotes] = useState([]);
 
+  // Fetch user data and notes when the component mounts
   useEffect(() => {
     const fetchUserData = async () => {
-      try {
-        const response = await fetch(`http://localhost:5000/api/v1/user?email=${email}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json"
-          },
-        });
-        if (response.ok) {
-          const userData = await response.json();
-          setUser(userData.data);
-          if (userData.data.attributes.notes) {
-            setNotes(userData.data.attributes.notes);
+      if (email) {
+        try {
+          const response = await fetch(`http://localhost:5000/api/v1/user?email=${email}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json"
+            },
+          });
+          if (response.ok) {
+            const userData = await response.json();
+            setUser(userData.data);
+            
+            const fetchedNotes = userData.data.attributes.notes;
+            if (fetchedNotes.length === 0) {
+              setError("No current notes");
+            } else {
+              setNotes(fetchedNotes);
+            }
+          } else {
+            setError("Failed to fetch user data.");
           }
-        } else {
-          setError("Failed to fetch user data.");
+        } catch (error) {
+          setError("An unexpected error occurred.");
         }
-      } catch (error) {
-        setError("An unexpected error occurred.");
       }
     };
     fetchUserData();
-  }, [setUser, email]);
+  }, [email]);
 
+
+  // Logout function
   const logout = async () => {
     setIsLogoutPending(true);
     setError('');
@@ -64,6 +74,7 @@ export const HomePage = (props) => {
     }
   }
 
+  // Function to handle closing a note
   const handleNoteClose = async (noteId) => {
     setError('');
     try {
@@ -79,7 +90,12 @@ export const HomePage = (props) => {
       });
   
       if (response.ok) {
-        setNotes(notes.filter(note => note.id !== noteId));
+        setNotes((prevNotes) => prevNotes.filter(note => note.id !== noteId)); // Set notes to a new array excluding the note with the id equal to noteId
+        if (notes.length === 1) { // Display error if there are no notes
+          setError("No current notes");
+        } else {
+          setError("");
+        }
       } else {
         const error = await response.json();
         setError(error.data.error || "Failed to delete note")
@@ -89,8 +105,10 @@ export const HomePage = (props) => {
     }
   }
 
+  // Function to add a new note
   const addNewNote = async () => {
     setIsNotePending(true);
+    setError('');
     try {
       const response = await fetch(`http://localhost:5000/api/v1/new_note`, {
         method: "POST",
@@ -104,7 +122,7 @@ export const HomePage = (props) => {
   
       if (response.ok) {
         const newNote = await response.json();
-        setNotes([...notes, newNote.data]);
+        setNotes(prevNotes => [...prevNotes, newNote.data]); // Add new note to array of notes
         setIsNotePending(false);
       } else {
         setIsNotePending(false);
@@ -130,7 +148,7 @@ export const HomePage = (props) => {
             <>
               <div className="new-note-container">
                 {!isNotePending && <button className="sticky-btn" onClick={addNewNote}>New Note +</button>}
-                {isNotePending && <button className="sticky-btn" disabled>Creating Note...</button>}
+                {isNotePending && <button className="sticky-btn" disabled>Creating Note</button>}
               </div>
               <div className="logout-container">
                 {!isLogoutPending && <button onClick={() => logout()}>Logout</button>}
@@ -149,11 +167,19 @@ export const HomePage = (props) => {
       <div className="sticky-notes-container">
         {notes.map((note) => (
           <StickyNote note={note} onClose={() => handleNoteClose(note.id)} key={note.id} />
-        ))}
+        ))} 
       </div>
-      <div className="error-msg">
-        {errorMsg && <p>{errorMsg}</p>}
-      </div>
+      {notes.length === 0 ? (
+        <>
+          <div>
+            <h1>No current notes</h1>
+          </div>
+        </>
+      ) : (
+        <div className="error-msg">
+          {errorMsg && <p>{errorMsg}</p>}
+        </div>
+      )}
     </div>
   );
 };
