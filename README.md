@@ -63,7 +63,7 @@ Functionality includes creating sticky notes, reading created notes, edit notes,
    ```
 6. Run your server
    ```sh
-     npm install
+     npm start
    ```
 8. Be sure that both front-end and <a href="https://github.com/ross-ian28/terra-notes-api">back-end</a> servers are running at the same time
 
